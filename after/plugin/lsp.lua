@@ -4,7 +4,7 @@ local lsp_config = require("lspconfig")
 lsp.on_attach(function(client, bufnr)
   lsp.default_keymaps({buffer = bufnr})
 end)
-lsp.setup_servers({'tsserver', 'golangci_lint_ls', 'gopls', 'cssls', 'kotlin_language_server'})
+lsp.setup_servers({'tsserver', 'gopls', 'cssls', 'kotlin_language_server'})
 -- (Optional) Configure lua language server for neovim
 require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
@@ -18,7 +18,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	["<CR>"] = cmp.mapping.confirm({select = false})
 })
 
-cmp_mappings['Tab'] = nil
+cmp_mappings['<Tab>'] = nil
 cmp_mappings['S-Tab'] = nil
 
 vim.diagnostic.config({
@@ -31,6 +31,8 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<leader>pr", function() vim.diagnostic.goto_prev() end, opts)
 	vim.keymap.set("n", "<leader>nx", function() vim.diagnostic.goto_prev() end, opts)
 	vim.keymap.set("n", "<C-i>", function() vim.diagnostic.setqflist() end, opts)
+	vim.api.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
 
 end
 
@@ -48,11 +50,29 @@ lsp_config["dartls"].setup({
         vim.fn.expand("$HOME/tools/flutter/"),
       },
       updateImportsOnRename = true,
-      completeFunctionCalls = true,
+	  completeFunctionCalls = true,
       showTodos = true,
     }
   },
 })
+
+util = require "lspconfig/util"
+
+lsp_config.gopls.setup {
+   cmd = {"gopls", "serve"},
+   filetypes = {"go", "gomod"},
+   root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+   settings = {
+      gopls = {
+         analyses = {
+            unusedparams = true,
+         },
+         staticcheck = true,
+      },
+   },
+}
+
+lsp_config.kotlin_language_server.setup{}
 
 lsp.setup()
 

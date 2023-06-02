@@ -1,5 +1,4 @@
 require("melocan")
-print("Hello")
 
 local set = vim.opt
 set.tabstop = 4

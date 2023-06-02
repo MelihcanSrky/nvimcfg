@@ -17,14 +17,17 @@ return require('packer').startup(function(use)
 	use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim'}
 	vim.cmd('colorscheme rose-pine')
 	use('j-hui/fidget.nvim')
-	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+	use('nvim-treesitter/nvim-treesitter')
 	use('norcalli/nvim-colorizer.lua')
+	use 'ray-x/go.nvim'
+	use 'ray-x/guihua.lua'
 	use('theprimeagen/harpoon')
 	use('mbbill/undotree')
+	use {'kevinhwang91/nvim-hlslens'}
 	use "lukas-reineke/indent-blankline.nvim"
 	use('tpope/vim-fugitive')
 	use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
-
+	use {'neoclide/coc.nvim', branch = 'release'}
 	use {
   'nvim-lualine/lualine.nvim',
   requires = { 'nvim-tree/nvim-web-devicons', opt = true }
@@ -51,7 +54,7 @@ return require('packer').startup(function(use)
 		branch = 'v2.x',
 		requires = {
 			-- LSP Support
-			{'neovim/nvim-lspconfig'},             -- Required
+			{'neovim/nvim-lspconfig'},             -- Requed
 			{                                      -- Optional
 			'williamboman/mason.nvim',
 			run = function()
